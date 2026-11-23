@@ -77,14 +77,13 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
-        ],
+        ]
     },
     "extra": {
         "laravel": {
             "dont-discover": []
         },
         "aws/aws-sdk-php": ["S3"]
-        
     },
     "config": {
         "optimize-autoloader": true,
