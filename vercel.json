@@ -1,19 +1,17 @@
 {
-    "$schema": "https://openapi.vercel.sh/vercel.json",
-    "version": 2,
-    "framework": null,
-    "buildCommand": "composer install --no-dev --optimize-autoloader && npm ci && npm run build && rm -rf dist && mkdir -p dist && cp -r public/. dist/ && rm -f dist/index.php dist/.htaccess",
-    "outputDirectory": "dist",
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.7.4",
-            "maxDuration": 30
-        }
-    },
-    "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/api/index.php"
-        }
-    ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "framework": null,
+  "buildCommand": "npm ci && npm run build",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.4"
+    }
+  },
+  "routes": [
+    { "src": "/build/(.*)", "dest": "/build/$1" },
+    { "src": "/(.*\\.(?:ico|png|jpg|svg|css|js|txt|webp))", "dest": "/$1" },
+    { "src": "/(.*)", "dest": "/api/index.php" }
+  ]
 }
