@@ -58,3 +58,5 @@ Tugas terjadwal (jalankan `php artisan schedule:run` tiap menit lewat cron / Tas
 Email dikirim lewat antrean (`QUEUE_CONNECTION=database` + `php artisan queue:work` di produksi; `sync` untuk lokal). `MAIL_MAILER=log` menulis email ke `storage/logs`.
 
 Pemulihan darurat Super Admin: `php artisan sirkula:pulihkan-superadmin email@contoh.id --reset-mfa`
+
+Re-init.
