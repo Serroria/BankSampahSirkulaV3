@@ -10,7 +10,8 @@
     }
   },
   "routes": [
-    { "handle": "filesystem" },
+    { "src": "/build/(.*)", "dest": "/build/$1" },
+    { "src": "/(.*\\.(?:ico|png|jpg|svg|css|js|txt|webp))", "dest": "/$1" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }
