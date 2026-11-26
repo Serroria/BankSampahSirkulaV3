@@ -47,14 +47,29 @@ class SupabaseStorage
         return self::base().rawurlencode($bucket).'/'.self::encode($path);
     }
 
+    // private static function unggah(string $bucket, string $path, UploadedFile $file): void
+    // {
+    //     self::http()
+    //         ->withHeaders(['x-upsert' => 'true'])
+    //         ->withBody(file_get_contents($file->getRealPath()), $file->getMimeType() ?: 'application/octet-stream')
+    //         ->post(self::url($bucket, $path))
+    //         ->throw();
+    // }
     private static function unggah(string $bucket, string $path, UploadedFile $file): void
-    {
-        self::http()
-            ->withHeaders(['x-upsert' => 'true'])
-            ->withBody(file_get_contents($file->getRealPath()), $file->getMimeType() ?: 'application/octet-stream')
-            ->post(self::url($bucket, $path))
-            ->throw();
+{
+    $res = self::http()
+        ->withHeaders(['x-upsert' => 'true'])
+        ->withBody(file_get_contents($file->getRealPath()), $file->getMimeType() ?: 'application/octet-stream')
+        ->post(self::url($bucket, $path));
+
+    if ($res->failed()) {
+        report(new \RuntimeException('Supabase upload gagal ['.$res->status().'] bucket='.$bucket.' : '.$res->body()));
+
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'dokumen' => 'Berkas gagal disimpan ke penyimpanan. Silakan coba lagi.',
+        ]);
     }
+}
 
     // ------------------------------------------------------------------
     //  PRIVAT  (dokumen)
