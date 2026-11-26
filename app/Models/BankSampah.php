@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 
 class BankSampah extends Model
 {
@@ -58,7 +58,7 @@ class BankSampah extends Model
 
     public function fotoUrl(): ?string
     {
-        return $this->foto ? Storage::url($this->foto) : null;
+        return SupabaseStorage::urlPublik($this->foto);
     }
 
     /** Jarak Haversine dalam km (dihitung di sisi server dari koordinat). */

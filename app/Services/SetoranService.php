@@ -50,7 +50,7 @@ class SetoranService
             $setoran = Setoran::create([
                 'customer_id' => $customer->id,
                 'bank_sampah_id' => $bank->id,
-                'foto_bukti' => $foto->store('setoran', 'public'),
+                'foto_bukti' => SupabaseStorage::simpanPublik('setoran', $foto),
                 'estimasi_nilai' => $estimasi,
                 'metode_penyerahan' => $data['metode_penyerahan'],
                 'alamat_jemput' => $data['metode_penyerahan'] === 'dijemput_kurir' ? $data['alamat_jemput'] : null,

@@ -7,6 +7,7 @@ use App\Models\Pengolahan;
 use Illuminate\Validation\Rule;
 use App\Models\Setoran;
 use App\Services\AuditLogger;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -70,7 +71,7 @@ class PengolahanController extends BaseController
                 'berat_diolah' => $data['berat_diolah'] ?? null,
                 'tanggal' => $data['tanggal'],
                 'catatan' => $data['catatan'] ?? null,
-                'foto_dokumentasi' => $request->file('foto_dokumentasi')->store('pengolahan', 'public'),
+                'foto_dokumentasi' => SupabaseStorage::simpanPublik('pengolahan', $request->file('foto_dokumentasi')),
             ]);
             $p->setoranAsal()->sync($setoranIds);
 

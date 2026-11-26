@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 
 class ProdukOlahan extends Model
 {
@@ -24,6 +24,6 @@ class ProdukOlahan extends Model
 
     public function fotoUrl(): ?string
     {
-        return $this->foto ? Storage::url($this->foto) : null;
+        return SupabaseStorage::urlPublik($this->foto);
     }
 }

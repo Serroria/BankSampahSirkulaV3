@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 
 class Pengolahan extends Model
 {
@@ -30,6 +30,6 @@ class Pengolahan extends Model
 
     public function fotoUrl(): ?string
     {
-        return $this->foto_dokumentasi ? Storage::url($this->foto_dokumentasi) : null;
+        return SupabaseStorage::urlPublik($this->foto_dokumentasi);
     }
 }

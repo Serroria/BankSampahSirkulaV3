@@ -38,22 +38,9 @@ return [
             'report' => false,
         ],
 
-        // Disk "public": foto & bukti (dapat diakses publik).
-        // Lokal  : PUBLIC_DISK_DRIVER=local (default, storage/app/public)
-        // Vercel : PUBLIC_DISK_DRIVER=s3    (Supabase Storage, bucket publik)
-        'public' => env('PUBLIC_DISK_DRIVER', 'local') === 's3' ? [
-            'driver' => 's3',
-            'key' => env('SUPABASE_S3_KEY'),
-            'secret' => env('SUPABASE_S3_SECRET'),
-            'region' => env('SUPABASE_S3_REGION', 'ap-northeast-1'),
-            'bucket' => env('SUPABASE_BUCKET_PUBLIC'),
-            'endpoint' => env('SUPABASE_S3_ENDPOINT'),
-            'url' => env('SUPABASE_PUBLIC_URL'),
-            'use_path_style_endpoint' => true,
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-        ] : [
+        // Disk lokal hanya dipakai di komputer sendiri. Di Vercel, berkas disimpan
+        // ke Supabase Storage lewat App\Services\SupabaseStorage (tanpa paket AWS).
+        'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
@@ -62,34 +49,9 @@ return [
             'report' => false,
         ],
 
-        // Disk "dokumen": berkas verifikasi pengajuan Supplier (PRIVAT, tanpa URL publik).
-        // Vercel : DOKUMEN_DISK_DRIVER=s3 (Supabase Storage, bucket PRIVAT)
-        'dokumen' => env('DOKUMEN_DISK_DRIVER', 'local') === 's3' ? [
-            'driver' => 's3',
-            'key' => env('SUPABASE_S3_KEY'),
-            'secret' => env('SUPABASE_S3_SECRET'),
-            'region' => env('SUPABASE_S3_REGION', 'ap-northeast-1'),
-            'bucket' => env('SUPABASE_BUCKET_PRIVATE'),
-            'endpoint' => env('SUPABASE_S3_ENDPOINT'),
-            'use_path_style_endpoint' => true,
-            'throw' => false,
-            'report' => false,
-        ] : [
+        'dokumen' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'throw' => false,
-            'report' => false,
-        ],
-
-        's3' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
         ],

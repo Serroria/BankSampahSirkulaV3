@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Supplier;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 use Inertia\Inertia;
 
 class ProfilController extends BaseController
@@ -33,9 +33,9 @@ class ProfilController extends BaseController
         $bank = $this->bank();
         if ($request->hasFile('foto')) {
             if ($bank->foto) {
-                Storage::disk('public')->delete($bank->foto);
+                SupabaseStorage::hapusPublik($bank->foto);
             }
-            $data['foto'] = $request->file('foto')->store('bank-sampah', 'public');
+            $data['foto'] = SupabaseStorage::simpanPublik('bank-sampah', $request->file('foto'));
         } else {
             unset($data['foto']);
         }

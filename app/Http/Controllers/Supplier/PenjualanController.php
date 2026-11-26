@@ -10,7 +10,7 @@ use App\Models\ProdukOlahan;
 use App\Services\AuditLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -68,7 +68,7 @@ class PenjualanController extends BaseController
                 'mitra_id' => $mitra->id,
                 'hasil_komunikasi' => $data['hasil_komunikasi'],
                 'nilai_transaksi' => $disetujui ? $nilai : 0,
-                'bukti_pembayaran' => $request->hasFile('bukti_pembayaran') ? $request->file('bukti_pembayaran')->store('bukti-pembayaran', 'public') : null,
+                'bukti_pembayaran' => $request->hasFile('bukti_pembayaran') ? SupabaseStorage::simpanPublik('bukti-pembayaran', $request->file('bukti_pembayaran')) : null,
                 'status_pengiriman' => $data['status_pengiriman'],
                 'catatan' => $data['catatan'] ?? null,
                 'tanggal' => $data['tanggal'],
@@ -101,9 +101,9 @@ class PenjualanController extends BaseController
 
         if ($request->hasFile('bukti_pembayaran')) {
             if ($model->bukti_pembayaran) {
-                Storage::disk('public')->delete($model->bukti_pembayaran);
+                SupabaseStorage::hapusPublik($model->bukti_pembayaran);
             }
-            $data['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti-pembayaran', 'public');
+            $data['bukti_pembayaran'] = SupabaseStorage::simpanPublik('bukti-pembayaran', $request->file('bukti_pembayaran'));
         } else {
             unset($data['bukti_pembayaran']);
         }

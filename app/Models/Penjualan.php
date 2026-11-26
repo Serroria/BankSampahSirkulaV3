@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 
 class Penjualan extends Model
 {
@@ -30,6 +30,6 @@ class Penjualan extends Model
 
     public function buktiUrl(): ?string
     {
-        return $this->bukti_pembayaran ? Storage::url($this->bukti_pembayaran) : null;
+        return SupabaseStorage::urlPublik($this->bukti_pembayaran);
     }
 }

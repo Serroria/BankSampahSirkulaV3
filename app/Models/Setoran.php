@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 
 class Setoran extends Model
 {
@@ -52,9 +52,9 @@ class Setoran extends Model
         return $this->hasMany(StatusPenjemputan::class)->orderBy('id');
     }
 
-    public function fotoUrl(): string
+    public function fotoUrl(): ?string
     {
-        return Storage::url($this->foto_bukti);
+        return SupabaseStorage::urlPublik($this->foto_bukti);
     }
 
     public function bisaDibatalkan(): bool

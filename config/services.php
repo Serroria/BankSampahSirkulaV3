@@ -39,6 +39,7 @@ return [
     'url' => env('SUPABASE_URL'),
     'key' => env('SUPABASE_SECRET_KEY'),
     'bucket_private' => env('SUPABASE_BUCKET_PRIVATE', 'Storage'),
+    'bucket_public' => env('SUPABASE_BUCKET_PUBLIC', 'StoragePublic'),
 ],
 
 ];

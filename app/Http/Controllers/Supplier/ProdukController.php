@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Supplier;
 
 use App\Models\ProdukOlahan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SupabaseStorage;
 use Inertia\Inertia;
 
 class ProdukController extends BaseController
@@ -31,9 +31,9 @@ class ProdukController extends BaseController
 
         if ($request->hasFile('foto')) {
             if ($model->foto) {
-                Storage::disk('public')->delete($model->foto);
+                SupabaseStorage::hapusPublik($model->foto);
             }
-            $data['foto'] = $request->file('foto')->store('produk', 'public');
+            $data['foto'] = SupabaseStorage::simpanPublik('produk', $request->file('foto'));
         } else {
             unset($data['foto']);
         }
