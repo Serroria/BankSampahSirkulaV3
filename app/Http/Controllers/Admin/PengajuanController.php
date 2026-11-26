@@ -11,8 +11,8 @@ use App\Models\User;
 use App\Services\Notifier;
 use App\Services\Pengaturan;
 use App\Services\PengajuanService;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PengajuanController extends Controller
@@ -161,6 +161,6 @@ class PengajuanController extends Controller
         abort_unless($dokumen->pengajuan_id === $pengajuan->id, 404);
         LogAkses::catat('buka_dokumen', ['pengajuan' => $pengajuan->kode_pengajuan, 'dokumen' => $dokumen->id, 'nama' => $dokumen->nama_asli]);
 
-        return Storage::disk(PengajuanService::DISK)->response($dokumen->path_berkas, $dokumen->nama_asli);
+        return SupabaseStorage::unduh($dokumen->path_berkas, $dokumen->nama_asli);
     }
 }

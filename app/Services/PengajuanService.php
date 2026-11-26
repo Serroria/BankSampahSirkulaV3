@@ -137,7 +137,7 @@ class PengajuanService
 
     private function simpanDokumen(PengajuanSupplier $p, int $jenisId, UploadedFile $file): void
     {
-        $path = Storage::disk(self::DISK)->putFileAs("pengajuan/{$p->id}", $file, Str::uuid().'.'.$file->getClientOriginalExtension());
+        $path = SupabaseStorage::simpan("pengajuan/{$p->id}/".Str::uuid().'.'.$file->getClientOriginalExtension(), $file);
 
         DokumenPengajuan::create([
             'pengajuan_id' => $p->id,
@@ -179,7 +179,8 @@ class PengajuanService
                     continue;
                 }
                 foreach ($p->dokumen()->where('jenis_dokumen_id', $jenisId)->where('status_pemeriksaan', 'perlu_diperbaiki')->get() as $lama) {
-                    Storage::disk(self::DISK)->delete($lama->path_berkas);
+                    // Storage::disk(self::DISK)->delete($lama->path_berkas);
+                    SupabaseStorage::hapus($lama->path_berkas);
                     $lama->delete();
                 }
                 foreach ($files as $file) {

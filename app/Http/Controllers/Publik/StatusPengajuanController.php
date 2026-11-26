@@ -9,8 +9,8 @@ use App\Services\AkunService;
 use App\Services\AuditLogger;
 use App\Services\Pengaturan;
 use App\Services\PengajuanService;
+use App\Services\SupabaseStorage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /** Cek Status Pengajuan tanpa akun: lewat tautan pribadi (token) atau kode pengajuan + email (FR-46). */
@@ -98,6 +98,6 @@ class StatusPengajuanController extends Controller
         $p = $this->cariToken($token);
         abort_unless($dokumen->pengajuan_id === $p->id, 404);
 
-        return Storage::disk(PengajuanService::DISK)->response($dokumen->path_berkas, $dokumen->nama_asli);
+        return SupabaseStorage::unduh($dokumen->path_berkas, $dokumen->nama_asli);
     }
 }
