@@ -55,7 +55,7 @@ class SupabaseStorage
     //         ->post(self::url($bucket, $path))
     //         ->throw();
     // }
-    private static function unggah(string $bucket, string $path, UploadedFile $file): void
+   private static function unggah(string $bucket, string $path, UploadedFile $file): void
 {
     $res = self::http()
         ->withHeaders(['x-upsert' => 'true'])
@@ -66,7 +66,7 @@ class SupabaseStorage
         report(new \RuntimeException('Supabase upload gagal ['.$res->status().'] bucket='.$bucket.' : '.$res->body()));
 
         throw \Illuminate\Validation\ValidationException::withMessages([
-            'dokumen' => 'Berkas gagal disimpan ke penyimpanan. Silakan coba lagi.',
+            'dokumen' => 'Gagal: ['.$res->status().'] '.$res->body(),
         ]);
     }
 }
