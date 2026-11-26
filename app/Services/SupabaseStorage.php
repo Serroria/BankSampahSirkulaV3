@@ -25,11 +25,24 @@ class SupabaseStorage
     }
 
     private static function http(): PendingRequest
-    {
-        $key = config('services.supabase.key');
+{
+    $key = trim((string) config('services.supabase.key'), " \t\n\r\0\x0B\"'");
 
-        return Http::withHeaders(['apikey' => $key, 'Authorization' => 'Bearer '.$key])->timeout(30);
+    // Key model baru (sb_secret_...) bukan JWT: kirim lewat header apikey saja.
+    // Key lama (service_role, berawalan eyJ...) tetap perlu header Authorization.
+    $headers = ['apikey' => $key];
+    if (! str_starts_with($key, 'sb_')) {
+        $headers['Authorization'] = 'Bearer '.$key;
     }
+
+    return Http::withHeaders($headers)->timeout(30);
+}
+    // private static function http(): PendingRequest
+    // {
+    //     $key = config('services.supabase.key');
+
+    //     return Http::withHeaders(['apikey' => $key, 'Authorization' => 'Bearer '.$key])->timeout(30);
+    // }
 
     private static function encode(string $path): string
     {
