@@ -149,7 +149,10 @@ class SupabaseStorage
         }
 
         if (! self::aktif()) {
-            return Storage::disk('public')->url($path);
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+            $disk = Storage::disk('public');
+
+            return $disk->url($path);
         }
 
         return self::base().'public/'.rawurlencode(config('services.supabase.bucket_public')).'/'.self::encode($path);
